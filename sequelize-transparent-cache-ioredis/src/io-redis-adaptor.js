@@ -1,5 +1,5 @@
 class IORedisAdaptor {
-  constructor ({ client, namespace, lifetime }) {
+  constructor ({ client, namespace, prefix, lifetime }) {
     this.client = client
     this.namespace = namespace
     this.prefix = prefix;
