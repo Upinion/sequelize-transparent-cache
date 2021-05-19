@@ -1,7 +1,6 @@
 {
 	"private": true,
 	"scripts": {
-		"postinstall": "lerna bootstrap",
 		"test": "jest --config jest.json",
 		"lint": "eslint .",
 		"posttest": "codecov"
