@@ -21,8 +21,8 @@ function instanceMethods (client, instance) {
       return instance.destroy.apply(instance, arguments)
         .then(() => cache.destroy(client, instance))
     },
-    clear () {
-      return cache.destroy(client, instance)
+    purgeCache () {
+      return cache.clearKey(client, instance)
     }
   }
 }

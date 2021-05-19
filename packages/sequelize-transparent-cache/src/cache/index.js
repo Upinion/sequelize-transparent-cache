@@ -14,7 +14,7 @@ async function save (client, instance, customKey) {
   }
 
   const key = [
-    getInstanceModel(instance).name
+    getInstanceModel(instance).tableName
   ]
 
   if (customKey) {
@@ -28,7 +28,7 @@ async function save (client, instance, customKey) {
 
 function saveAll (client, model, instances, customKey) {
   const key = [
-    model.name,
+    model.tableName,
     customKey
   ]
 
@@ -37,7 +37,7 @@ function saveAll (client, model, instances, customKey) {
 
 function getAll (client, model, customKey) {
   const key = [
-    model.name,
+    model.tableName,
     customKey
   ]
 
@@ -51,7 +51,7 @@ function getAll (client, model, customKey) {
 
 function get (client, model, id) {
   const key = [
-    model.name,
+    model.tableName,
     id
   ]
 
@@ -66,18 +66,17 @@ function destroy (client, instance) {
   }
 
   const key = [
-    getInstanceModel(instance).name,
+    getInstanceModel(instance).tableName,
     ...getInstanceCacheKey(instance)
   ]
   return client.del(key)
 }
 
-function clearKey (client, model, customKey) {
+function clearKey (client, instance, model) {
   const key = [
-    model.name,
-    customKey
+    model ? model.tableName : getInstanceModel(instance).tableName
   ]
-  return client.del(key)
+  return client.del(key, true)
 }
 
 module.exports = {

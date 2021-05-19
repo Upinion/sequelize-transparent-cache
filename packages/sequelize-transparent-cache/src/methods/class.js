@@ -1,4 +1,27 @@
+const crypto = require('crypto');
 const cache = require('../cache')
+
+const generateKey = (args) => {
+    const paramString = JSON.stringify(args, (key, value) => {
+        // Replace all the problematic objects for the stringify to work
+        if (key === 'model') {
+            return value.name;
+        } else if (key === 'association') {
+            // Not fully tested
+            return `${value.source.name}.${value.as}`;
+        } else if (key === 'transaction'
+            || key === 'logging'
+            || key === 'lock'
+        ) {
+            return true;
+        } else if (key === 'include' && value && value.length) {
+            return value.map((x) => x && x.name ? x.name : x);
+        } else {
+            return value;
+        }
+    });
+    return crypto.createHash('md4').update(paramString).digest('hex');
+}; 
 
 function buildAutoMethods (client, model) {
   return {
@@ -11,8 +34,33 @@ function buildAutoMethods (client, model) {
           return cache.save(client, instance)
         })
     },
+    findAll () {
+      const customKey = generateKey(arguments);
+      return cache.getAll(client, model, customKey)
+        .then(instances => {
+          if (instances) { // any array - cache hit
+            return instances
+          }
+
+          return model.findAll.apply(model, arguments)
+            .then(instances => cache.saveAll(client, model, instances, customKey))
+        })
+    },
+    findOne () {
+      const customKey = generateKey(arguments);
+      return cache.get(client, model, customKey)
+        .then(instance => {
+          if (instance) {
+            return instance
+          }
+
+          return model.findOne.apply(model, arguments)
+            .then(instance => cache.save(client, instance, customKey))
+        })
+    },
     findByPk (id) {
-      return cache.get(client, model, id)
+      const customKey = generateKey(id);
+      return cache.get(client, model, customKey)
         .then(instance => {
           if (instance) {
             return instance
@@ -33,6 +81,9 @@ function buildAutoMethods (client, model) {
     },
     insertOrUpdate () {
       return this.upsert.apply(this, arguments)
+    },
+    purgeCache () {
+      return cache.clearKey(client, null, model);
     }
   }
 }
@@ -64,8 +115,8 @@ function buildManualMethods (client, model, customKey) {
             .then(instance => cache.save(client, instance, customKey))
         })
     },
-    clear () {
-      return cache.clearKey(client, model, customKey)
+    purgeCache () {
+      return cache.clearKey(client, null, model)
     }
   }
 }

@@ -92,17 +92,22 @@ Instance:
 * [`update()`](http://docs.sequelizejs.com/class/lib/model.js~Model.html#static-method-update)
 * [`destroy()`](http://docs.sequelizejs.com/class/lib/model.js~Model.html#instance-method-destroy)
 * [`reload()`](http://docs.sequelizejs.com/class/lib/model.js~Model.html#instance-method-reload)
+* `purgeCache()` - remove data associated to model from cache
 
 Model:
 * Automatic cache methods - does not require cache key: `cache()`
   * [`create()`](http://docs.sequelizejs.com/class/lib/model.js~Model.html#static-method-create)
+  * [`findAll()`](http://docs.sequelizejs.com/class/lib/model.js~Model.html#static-method-findAll)
+  * [`findOne()`](http://docs.sequelizejs.com/class/lib/model.js~Model.html#static-method-findOne)
   * [`findByPk()`](http://docs.sequelizejs.com/class/lib/model.js~Model.html#static-method-findByPk)
+  * `purgeCache()` - remove data associated to model from cache
+
   * [`upsert()`](http://docs.sequelizejs.com/class/lib/model.js~Model.html#static-method-upsert) - **EXPERIMENTAL**
   * [`insertOrUpdate()`](http://docs.sequelizejs.com/class/lib/model.js~Model.html#static-method-upsert) - **EXPERIMENTAL**
 * Manual cache methods - require cache key: `cache(key)`
   * [`findAll()`](http://docs.sequelizejs.com/class/lib/model.js~Model.html#static-method-findAll)
   * [`findOne()`](http://docs.sequelizejs.com/class/lib/model.js~Model.html#static-method-findOne)
-  * `clear()` - remove data associated with key from cache
+  * `purgeCache()` - remove data associated to model from cache
 
 In addition, both objects will contain `client()` method to get cache adaptor.
 

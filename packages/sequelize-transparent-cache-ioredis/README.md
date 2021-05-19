@@ -13,8 +13,9 @@ const redis = new Redis()
 const RedisAdaptor = require('sequelize-transparent-cache-ioredis')
 const redisAdaptor = new RedisAdaptor({
   client: redis,
-  namespace: 'model', // optional
-  lifetime: 60 * 60   // optional
+  namespace: 'model',  // optional
+  prefix: 'sequelize', // optional
+  lifetime: 60 * 60    // optional
 })
 
 ```
@@ -25,6 +26,7 @@ const redisAdaptor = new RedisAdaptor({
 |-------------|------------------|----------|---------------------------------------------------------------------------------|
 | `client`    | ioredis instance | yes      | Configured [ioredis instance](https://github.com/luin/ioredis#connect-to-redis) |
 | `namespace` | string           | no       | Prefix for all keys                                                             |
+| `prefix`    | string           | no       | Prefix for the objectId (useful if you have multiple orms using the same cache) |
 | `lifetime`  | integer          | no       | Keys lifetime, seconds                                                          |
 
 ## Storing format
@@ -33,6 +35,6 @@ Namespace delimeter is ":".
 
 | Key                                  | Value           |
 |--------------------------------------|-----------------|
-| `<namespace>:<modelName>:<objectId>` | `{JSON string}` |
+| `<namespace>:<dbTableName>:<prefix>:<objectId>` | `{JSON string}` |
 
 For more info see [sequelize-transparent-cache](https://www.npmjs.com/package/sequelize-transparent-cache)
