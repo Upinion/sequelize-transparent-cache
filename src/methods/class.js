@@ -1,7 +1,7 @@
 const crypto = require('crypto');
 const cache = require('../cache')
 
-const generateKey = (args) => {
+const generateKey = (prepend, args) => {
     const paramString = JSON.stringify(args, (key, value) => {
         // Replace all the problematic objects for the stringify to work
         if (key === 'model') {
@@ -20,7 +20,7 @@ const generateKey = (args) => {
             return value;
         }
     });
-    return crypto.createHash('md4').update(paramString).digest('hex');
+    return crypto.createHash('md4').update(prepend+paramString).digest('hex');
 }; 
 
 function buildAutoMethods (client, model) {
@@ -35,7 +35,7 @@ function buildAutoMethods (client, model) {
         })
     },
     findAll () {
-      const customKey = generateKey(arguments);
+      const customKey = generateKey(`findAll:${model.name}`, arguments);
       return cache.getAll(client, model, customKey)
         .then(instances => {
           if (instances) { // any array - cache hit
@@ -47,7 +47,7 @@ function buildAutoMethods (client, model) {
         })
     },
     findOne () {
-      const customKey = generateKey(arguments);
+      const customKey = generateKey(`findOne:${model.name}`, arguments);
       return cache.get(client, model, customKey)
         .then(instance => {
           if (instance) {
@@ -55,11 +55,13 @@ function buildAutoMethods (client, model) {
           }
 
           return model.findOne.apply(model, arguments)
-            .then(instance => cache.save(client, instance, customKey))
+                .then(instance => {
+                    return cache.save(client, instance, customKey)
+                })
         })
     },
     findByPk (id) {
-      const customKey = generateKey(id);
+      const customKey = generateKey(`findByPk:${model.name}`, id);
       return cache.get(client, model, customKey)
         .then(instance => {
           if (instance) {

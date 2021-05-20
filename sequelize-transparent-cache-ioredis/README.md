@@ -35,6 +35,6 @@ Namespace delimeter is ":".
 
 | Key                                  | Value           |
 |--------------------------------------|-----------------|
-| `<namespace>:<dbTableName>:<prefix>:<objectId>` | `{JSON string}` |
+| `<namespace>:<dbTableName>[<prefix>_<objectId>]` | `{JSON string}` |
 
 For more info see [sequelize-transparent-cache](https://www.npmjs.com/package/sequelize-transparent-cache)
