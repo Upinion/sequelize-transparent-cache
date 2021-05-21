@@ -106,10 +106,11 @@ In addition, both objects will contain `client()` method to get cache adaptor.
 
 ## Available adaptors
 
-* [memcached](https://www.npmjs.com/package/sequelize-transparent-cache-memcached)
-* [memcache-plus](https://www.npmjs.com/package/sequelize-transparent-cache-memcache-plus)
-* [ioredis](https://www.npmjs.com/package/sequelize-transparent-cache-ioredis)
-* [variable](https://www.npmjs.com/package/sequelize-transparent-cache-variable)
+* [memcached](https://github.com/Upinion/sequelize-transparent-cache/tree/master/sequelize-transparent-cache-memcached)
+* [memcache-plus](https://github.com/Upinion/sequelize-transparent-cache/tree/master/sequelize-transparent-cache-memcache-plus)
+* [ioredis](https://github.com/Upinion/sequelize-transparent-cache/tree/master/sequelize-transparent-cache-ioredis)
+* [variable](https://github.com/Upinion/sequelize-transparent-cache/tree/master/sequelize-transparent-cache-variable)
+* [dummy](https://github.com/Upinion/sequelize-transparent-cache/tree/master/sequelize-transparent-cache-dummy)
 
 You can easy write your own adaptor. Each adaptor must implement 3 methods:
 

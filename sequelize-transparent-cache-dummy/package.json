@@ -1,0 +1,22 @@
+{
+  "name": "sequelize-transparent-cache-dummy",
+  "version": "1.0.0",
+  "description": "Dummy adaptor for sequelize-transparent-cache",
+  "main": "src/index.js",
+  "keywords": [
+    "sequelize",
+    "cache",
+    "plugin",
+    "adapter",
+    "adaptor"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/upinion/sequelize-transparent-cache.git"
+  },
+  "author": {
+    "name": "upinion",
+    "email": "info@upinion.com"
+  },
+  "license": "CC-BY-4.0"
+}

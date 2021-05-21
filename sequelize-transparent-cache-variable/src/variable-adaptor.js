@@ -23,10 +23,14 @@ class VariableAdaptor {
     return Promise.resolve(data ? JSON.parse(data) : data)
   }
 
-  del ([model, ...ids]) {
+  del ([model, ...ids], noObjectId) {
     this._ensureModel(model)
 
-    delete this.store[model][ids.join()]
+    if (notObjectId) {
+        delete this.store[model];
+    } else {
+        delete this.store[model][ids.join()]
+    }
     return Promise.resolve()
   }
 }
