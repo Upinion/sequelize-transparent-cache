@@ -61,8 +61,7 @@ function buildAutoMethods (client, model) {
         })
     },
     findByPk (id) {
-      const customKey = generateKey(`findByPk:${model.name}`, id);
-      return cache.get(client, model, customKey)
+      return cache.get(client, model, id)
         .then(instance => {
           if (instance) {
             return instance
@@ -77,7 +76,7 @@ function buildAutoMethods (client, model) {
     },
     upsert (data) {
       return model.upsert.apply(model, arguments).then(created => {
-        return cache.destroy(client, model.build(data))
+        return cache.clearKey(client, null, model)
           .then(() => created)
       })
     },

@@ -5,12 +5,16 @@ function instanceMethods (client, instance) {
     client () { return client },
     save () {
       return instance.save.apply(instance, arguments)
-        .then(instance => cache.save(client, instance))
+            .then(instance => cache.clearKey(client, instance)
+                .then(() => cache.save(client, instance))
+            )
     },
     update () {
       return instance.update
         .apply(instance, arguments)
-        .then(instance => cache.save(client, instance))
+        .then(instance => cache.clearKey(client, instance)
+            .then(() => cache.save(client, instance))
+        )
     },
     reload () {
       return instance.reload
@@ -19,7 +23,7 @@ function instanceMethods (client, instance) {
     },
     destroy () {
       return instance.destroy.apply(instance, arguments)
-        .then(() => cache.destroy(client, instance))
+        .then(() => cache.clearKey(client, instance))
     },
     purgeCache () {
       return cache.clearKey(client, instance)
