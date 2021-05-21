@@ -1,12 +1,5 @@
 # sequelize-transparent-cache
 
-[![Build Status](https://travis-ci.org/DanielHreben/sequelize-transparent-cache.svg?branch=master)](https://travis-ci.org/DanielHreben/sequelize-transparent-cache)
-[![Coverage Status](https://codecov.io/gh/DanielHreben/sequelize-transparent-cache/branch/master/graph/badge.svg)](https://codecov.io/gh/DanielHreben/sequelize-transparent-cache)
-[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-[![Code Climate](https://codeclimate.com/github/DanielHreben/sequelize-transparent-cache/badges/gpa.svg)](https://codeclimate.com/github/DanielHreben/sequelize-transparent-cache)
-[![npm version](https://badge.fury.io/js/sequelize-transparent-cache.svg)](https://badge.fury.io/js/sequelize-transparent-cache)
-[![Dependency Status](https://david-dm.org/DanielHreben/sequelize-transparent-cache.svg)](https://www.versioneye.com/user/projects/5922c858da94de003b9f63af)
-
 Simple to use and universal cache layer for Sequelize.
 
 * Abstract: does not depends on underlying database, or cache specific
@@ -31,7 +24,7 @@ In this example we will use [ioredis](https://www.npmjs.com/package/ioredis)
 const Redis = require('ioredis')
 const redis = new Redis()
 
-const RedisAdaptor = require('sequelize-transparent-cache-ioredis')
+const RedisAdaptor = require('sequelize-transparent-cache/sequelize-transparent-cache-ioredis')
 const redisAdaptor = new RedisAdaptor({
   client: redis,
   namespace: 'model',
@@ -79,8 +72,8 @@ await user.cache().update({
 
 Look for all examples applications in `examples` folder.
 
-* [Usage with memcached](https://github.com/DanielHreben/sequelize-transparent-cache/blob/master/examples/memcached-mysql)
-* [Usage with ioredis](https://github.com/DanielHreben/sequelize-transparent-cache/blob/master/examples/redis-mysql)
+* [Usage with memcached](https://github.com/Upinion/sequelize-transparent-cache/blob/master/examples/memcached-mysql)
+* [Usage with ioredis](https://github.com/Upinion/sequelize-transparent-cache/blob/master/examples/redis-mysql)
 
 ## Methods
 

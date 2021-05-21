@@ -10,7 +10,7 @@ Stores sequelize objects in redis using ioredis client.
 const Redis = require('ioredis')
 const redis = new Redis()
 
-const RedisAdaptor = require('sequelize-transparent-cache-ioredis')
+const RedisAdaptor = require('sequelize-transparent-cache/sequelize-transparent-cache-ioredis')
 const redisAdaptor = new RedisAdaptor({
   client: redis,
   namespace: 'model',  // optional
