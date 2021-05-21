@@ -92,7 +92,7 @@ Instance:
 * [`update()`](http://docs.sequelizejs.com/class/lib/model.js~Model.html#static-method-update)
 * [`destroy()`](http://docs.sequelizejs.com/class/lib/model.js~Model.html#instance-method-destroy)
 * [`reload()`](http://docs.sequelizejs.com/class/lib/model.js~Model.html#instance-method-reload)
-* `purgeCache()` - remove data associated to model from cache
+* `purgeCache()` - remove data associated to model from cache (only ioredis)
 
 Model:
 * Automatic cache methods - does not require cache key: `cache()`
@@ -100,14 +100,14 @@ Model:
   * [`findAll()`](http://docs.sequelizejs.com/class/lib/model.js~Model.html#static-method-findAll)
   * [`findOne()`](http://docs.sequelizejs.com/class/lib/model.js~Model.html#static-method-findOne)
   * [`findByPk()`](http://docs.sequelizejs.com/class/lib/model.js~Model.html#static-method-findByPk)
-  * `purgeCache()` - remove data associated to model from cache
+  * `purgeCache()` - remove data associated to model from cache (only ioredis)
 
   * [`upsert()`](http://docs.sequelizejs.com/class/lib/model.js~Model.html#static-method-upsert) - **EXPERIMENTAL**
   * [`insertOrUpdate()`](http://docs.sequelizejs.com/class/lib/model.js~Model.html#static-method-upsert) - **EXPERIMENTAL**
 * Manual cache methods - require cache key: `cache(key)`
   * [`findAll()`](http://docs.sequelizejs.com/class/lib/model.js~Model.html#static-method-findAll)
   * [`findOne()`](http://docs.sequelizejs.com/class/lib/model.js~Model.html#static-method-findOne)
-  * `purgeCache()` - remove data associated to model from cache
+  * `purgeCache()` - remove data associated to model from cache (only ioredis)
 
 In addition, both objects will contain `client()` method to get cache adaptor.
 
@@ -125,3 +125,6 @@ You can easy write your own adaptor. Each adaptor must implement 3 methods:
 * `del(path: Array<string>): Promise<void>`
 
 Checkout existed adaptors for reference implementation.
+
+## TODO
+Add support for purgeCache to `memcahed`, `memcached-plus` and `variable` caches.

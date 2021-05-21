@@ -1,32 +1,10 @@
 {
-  "_from": "git+https://github.com/Upinion/sequelize-transparent-cache.git",
-  "_id": "sequelize-transparent-cache@2.3.0",
-  "_inBundle": false,
-  "_integrity": "",
-  "_location": "/sequelize-transparent-cache",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "git",
-    "raw": "sequelize-transparent-cache@git+https://github.com/Upinion/sequelize-transparent-cache.git",
-    "name": "sequelize-transparent-cache",
-    "escapedName": "sequelize-transparent-cache",
-    "rawSpec": "git+https://github.com/Upinion/sequelize-transparent-cache.git",
-    "saveSpec": "git+https://github.com/Upinion/sequelize-transparent-cache.git",
-    "fetchSpec": "https://github.com/Upinion/sequelize-transparent-cache.git",
-    "gitCommittish": null
-  },
-  "_requiredBy": [
-    "/@upinion/node-orm-upinion"
-  ],
-  "_resolved": "git+https://github.com/Upinion/sequelize-transparent-cache.git#3523964b3c8f1ae75db390b17775e3c3234a3e5d",
-  "_spec": "sequelize-transparent-cache@git+https://github.com/Upinion/sequelize-transparent-cache.git",
-  "_where": "/Users/juldiadia/Work/product-development/shared/repositories/conversation-service/node_modules/@upinion/node-orm-upinion",
   "author": {
     "name": "Daniel Hreben",
     "email": "daniel.hreben@gmail.com"
   },
   "bugs": {
-    "url": "https://github.com/DanielHreben/sequelize-transparent-cache/issues"
+    "url": "https://github.com/Upinion/sequelize-transparent-cache/issues"
   },
   "bundleDependencies": false,
   "deprecated": false,
@@ -35,7 +13,7 @@
     "sequelize": ">=5.21.6",
     "sqlite3": "^4.1.1"
   },
-  "homepage": "https://github.com/DanielHreben/sequelize-transparent-cache#readme",
+  "homepage": "https://github.com/Upinion/sequelize-transparent-cache#readme",
   "keywords": [
     "sequelize",
     "cache",
@@ -49,7 +27,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DanielHreben/sequelize-transparent-cache.git"
+    "url": "git+https://github.com/Upinion/sequelize-transparent-cache.git"
   },
   "version": "2.3.0"
 }
