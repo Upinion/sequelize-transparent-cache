@@ -46,6 +46,24 @@ function buildAutoMethods (client, model) {
             .then(instances => cache.saveAll(client, model, instances, customKey))
         })
     },
+    findOrCreate () {
+      const customKey = generateKey(`findOrCreate:${model.name}`, arguments);
+      return cache.get(client, model, customKey)
+        .then(instance => {
+          if (instance) {
+            return [instance, false]
+          }
+
+          return model.findOrCreate.apply(model, arguments)
+                .then(result => {
+                    if (result[0]) {
+                        return cache.save(client, result[0], customKey)
+                            .then(() => result)
+                    }
+                    return result
+                })
+        })
+    },
     findOne () {
       const customKey = generateKey(`findOne:${model.name}`, arguments);
       return cache.get(client, model, customKey)
@@ -103,6 +121,24 @@ function buildManualMethods (client, model, customKey) {
 
           return model.findAll.apply(model, arguments)
             .then(instances => cache.saveAll(client, model, instances, customKey))
+        })
+    },
+    findOrCreate () {
+      return cache.get(client, model, customKey)
+        .then(instance => {
+          if (instance) {
+            return [instance, false]
+          }
+
+          return model.findOrCreate.apply(model, arguments)
+                .then(result => {
+                    if (result[0]) {
+                        return cache.save(client, result[0], customKey)
+                            .then(() => result)
+
+                    }
+                    return result
+                })
         })
     },
     findOne () {
