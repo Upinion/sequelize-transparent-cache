@@ -25,7 +25,6 @@ const generateKey = (prepend, args) => {
                 newValue[x.toString()] = value[x];
             });
             return newValue;
-        }
         } else {
             return value;
         }
