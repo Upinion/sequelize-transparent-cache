@@ -12,6 +12,10 @@ class DummyAdaptor {
   del ([model, ...ids], noObjectId) {
     return Promise.resolve()
   }
+
+  clearKey (model) {
+    return Promise.resolve()
+  }
 }
 
 module.exports = DummyAdaptor

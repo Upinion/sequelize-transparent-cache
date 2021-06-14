@@ -76,7 +76,10 @@ function clearKey (client, instance, model) {
   const key = [
     model ? model.tableName : getInstanceModel(instance).tableName
   ]
-  return client.del(key, true)
+  if (client.clearKey) {
+      return client.clearKey(key)
+  }
+  return Promise.resolve(false);
 }
 
 module.exports = {

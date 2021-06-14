@@ -1,19 +1,8 @@
 class IORedisAdaptor {
-  constructor ({ client, namespace, prefix, lifetime }) {
+  constructor ({ client, namespace, lifetime }) {
     this.client = client
     this.namespace = namespace
-    this.prefix = prefix;
     this.lifetime = lifetime
-    this.delimiter = ':'
-  }
-
-  _allNamespace (key) {
-    const namespace = this.namespace
-    const keyWithNamespace = namespace
-      ? [namespace, ...key]
-      : key
-    const keyNameSpace = keyWithNamespace.join(this.delimiter)
-    return `${keyNameSpace}\\[*\\]`;
   }
 
   _withNamespace (key) {
@@ -21,12 +10,8 @@ class IORedisAdaptor {
     const keyWithNamespace = namespace
       ? [namespace, ...key]
       : key
-    let objectId = keyWithNamespace.pop();
-    if (this.prefix) {
-      objectId = `${this.prefix}_${objectId}`;
-    }
-    const keyNameSpace = keyWithNamespace.join(this.delimiter)
-    return `${keyNameSpace}[${objectId}]`;
+
+    return keyWithNamespace.join(':')
   }
 
   set (key, value) {
@@ -38,7 +23,7 @@ class IORedisAdaptor {
       this._withNamespace(key),
       JSON.stringify(value),
       options
-    );
+    )
   }
 
   get (key) {
@@ -56,12 +41,8 @@ class IORedisAdaptor {
       })
   }
 
-  del (key, noObjectId) {
-    if (noObjectId) {
-      return this.client.keys(this._allNamespace(key))
-        .then((keys) => { return this.client.del(keys); } );
-    }
-    return this.client.del(this._withNamespace(key));
+  del (key) {
+    return this.client.del(this._withNamespace(key))
   }
 }
 

@@ -23,7 +23,8 @@
   "main": "src/index.js",
   "name": "sequelize-transparent-cache",
   "peerDependencies": {
-    "sequelize": ">=5"
+    "sequelize": ">=5",
+    "php-serialize": "^4.0.2"
   },
   "repository": {
     "type": "git",
