@@ -7,6 +7,7 @@ class DoctrineIORedisAdaptor {
         this.lifetime = lifetime;
         this.delimiter = ':';
         this.namespaceVersion = null;
+        this.lastNamespaceModel = null;
         this.cacheKeyLifetime = cacheKeyLifetime || 604800;
     }
 
@@ -27,8 +28,13 @@ class DoctrineIORedisAdaptor {
             }); 
     }
 
+    resetNamespaceVersion() {
+        this.lastNamespaceModel = null;
+        this.namespaceVersion = null;
+    }
+
     _getNamespaceVersion (model) {
-        if (this.namespaceVersion !== null) {
+        if (this.namespaceVersion !== null && this.lastNamespaceModel === model) {
             return Promise.resolve(this.namespaceVersion);
         }
 
@@ -39,6 +45,7 @@ class DoctrineIORedisAdaptor {
                     return 1;
                 }
                 const version = unserialize(data) || 1;
+                this.lastNamespaceModel = model;
                 this.namespaceVersion = version;
                 return version;
             });
@@ -46,6 +53,7 @@ class DoctrineIORedisAdaptor {
 
     _setNamespaceVersion (model, version) {
         const namespaceCacheKey = this._getNamespaceCacheKey(model);
+        this.lastNamespaceModel = model;
         this.namespaceVersion = version;
 
         const options = this.cacheKeyLifetime
@@ -60,7 +68,11 @@ class DoctrineIORedisAdaptor {
     }
 
     _getNamespaceCacheKey (model) {
+        if (this.namespace) {
+            return `${this.namespace}${this.delimiter}DoctrineNamespaceCacheKey[${model}]`;
+        }
         return `DoctrineNamespaceCacheKey[${model}]`;
+
     }
 
     set (key, value) {
