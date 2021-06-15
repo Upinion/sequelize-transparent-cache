@@ -82,7 +82,7 @@ class DoctrineIORedisAdaptor {
         return this._withNamespace(key)
             .then((nkey) => {
                 return this.client.get(nkey)
-            });
+            })
             .then(data => {
                 if (!data) {
                     return data;
