@@ -16,7 +16,7 @@ const generateKey = (prepend, args) => {
             return true;
         } else if (key === 'include' && value && value.length) {
             return value.map((x) => x && x.name ? x.name : x);
-        } else if (value && typeof value === 'object'){
+        } else if (value && typeof value === 'object') {
             const newValue = {};
             Object.keys(value).forEach(x => {
                 newValue[x] = value[x];

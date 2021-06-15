@@ -20,14 +20,16 @@ class DoctrineIORedisAdaptor {
             objectId = `${this.prefix}_${objectId}`;
         }
         const model = keyWithNamespace.pop();
-        const version = this._getNamespaceVersion(model); 
-        const keyNameSpace = [...keyWithNamespace, model].join(this.delimiter);
-        return `${keyNameSpace}[${objectId}][${version}]`;
+        return this._getNamespaceVersion(model)
+            .then((version) => {
+                const keyNameSpace = [...keyWithNamespace, model].join(this.delimiter);
+                return `${keyNameSpace}[${objectId}][${version}]`;
+            }); 
     }
 
     _getNamespaceVersion (model) {
         if (this.namespaceVersion !== null) {
-            return this.namespaceVersion;
+            return Promise.resolve(this.namespaceVersion);
         }
 
         const namespaceCacheKey = this._getNamespaceCacheKey(model);
@@ -45,10 +47,15 @@ class DoctrineIORedisAdaptor {
     _setNamespaceVersion (model, version) {
         const namespaceCacheKey = this._getNamespaceCacheKey(model);
         this.namespaceVersion = version;
+
+        const options = this.cacheKeyLifetime
+            ? ['EX', this.cacheKeyLifetime]
+            : [];
+
         return this.client.set(
             namespaceCacheKey,
             serialize(version),
-            ['EX', this.cacheKeyLifetime]
+            options
         );
     }
 
@@ -61,15 +68,21 @@ class DoctrineIORedisAdaptor {
             ? ['EX', this.lifetime]
             : [];
 
-        return this.client.set(
-            this._withNamespace(key),
-            JSON.stringify(value),
-            options
-        );
+        return this._withNamespace(key)
+            .then((nkey) => {
+                return this.client.set(
+                    nkey,
+                    JSON.stringify(value),
+                    options
+                );
+            });
     }
 
     get (key) {
-        return this.client.get(this._withNamespace(key))
+        return this._withNamespace(key)
+            .then((nkey) => {
+                return this.client.get(nkey)
+            });
             .then(data => {
                 if (!data) {
                     return data;
@@ -84,14 +97,18 @@ class DoctrineIORedisAdaptor {
     }
 
     del (key) {
-        return this.client.del(this._withNamespace(key));
+        return this._withNamespace(key)
+            .then((nkey) => {
+                return this.client.del(nkey);
+            });
     }
 
     clearKey (model) {
-        const namespaceCacheKey = this._getNespaceCacheKey(model);
-        const namespaceVersion  = this._getNamespaceVersion(model) + 1;
-
-        return this._setNamespaceVersion(model, namespaceVersion);
+        const namespaceCacheKey = this._getNamespaceCacheKey(model);
+        return this._getNamespaceVersion(model)
+            .then((namespaceVersion) => {
+                return this._setNamespaceVersion(model, namespaceVersion + 1);
+            });
     }
 }
 
