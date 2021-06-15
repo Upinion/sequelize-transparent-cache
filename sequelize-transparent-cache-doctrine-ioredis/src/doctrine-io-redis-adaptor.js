@@ -12,7 +12,7 @@ class DoctrineIORedisAdaptor {
 
     _withNamespace (key) {
         const namespace = this.namespace;
-        const keyWithNamespace = namespace;
+        const keyWithNamespace = namespace
             ? [namespace, ...key]
             : key;
         let objectId = keyWithNamespace.pop();
