@@ -38,13 +38,16 @@ class DoctrineIORedisAdaptor {
             return Promise.resolve(this.namespaceVersion);
         }
 
+
         const namespaceCacheKey = this._getNamespaceCacheKey(model);
         return this.client.get(namespaceCacheKey)
             .then(data => {
+                let version;
                 if (!data) {
-                    return 1;
+                    version = 1;
+                } else {
+                    version = unserialize(data) || 1;
                 }
-                const version = unserialize(data) || 1;
                 this.lastNamespaceModel = model;
                 this.namespaceVersion = version;
                 return version;
