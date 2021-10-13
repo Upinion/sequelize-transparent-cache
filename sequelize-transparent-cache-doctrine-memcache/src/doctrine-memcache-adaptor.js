@@ -41,7 +41,7 @@ class DoctrineMemcacheAdaptor {
 
         const namespaceCacheKey = this._getNamespaceCacheKey(model);
         return this.client.get(namespaceCacheKey)
-            .then((err, data) => {
+            .then((data) => {
                 let version;
                 if (!data) {
                     version = 1;
