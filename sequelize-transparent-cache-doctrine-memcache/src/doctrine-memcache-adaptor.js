@@ -1,4 +1,3 @@
-const { serialize, unserialize } = require('php-serialize');
 class DoctrineMemcacheAdaptor {
     constructor ({ client, namespace, prefix, lifetime, cacheKeyLifetime }) {
         this.client = client;
@@ -41,12 +40,12 @@ class DoctrineMemcacheAdaptor {
 
         const namespaceCacheKey = this._getNamespaceCacheKey(model);
         return this.client.get(namespaceCacheKey)
-            .then((data) => {
+            .then(data => {
                 let version;
                 if (!data) {
                     version = 1;
                 } else {
-                    version = unserialize(data) || 1;
+                    version = data || 1;
                 }
                 this.lastNamespaceModel = model;
                 this.namespaceVersion = version;
@@ -63,7 +62,7 @@ class DoctrineMemcacheAdaptor {
 
         return this.client.set(
             namespaceCacheKey,
-            serialize(version),
+            version,
             options
         );
     }
