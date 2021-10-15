@@ -1,4 +1,4 @@
-class DoctrineMemcacheAdaptor {
+class DoctrineMemJSAdaptor {
     constructor ({ client, namespace, prefix, lifetime, cacheKeyLifetime }) {
         this.client = client;
         this.namespace = namespace;
@@ -32,6 +32,51 @@ class DoctrineMemcacheAdaptor {
         this.namespaceVersion = null;
     }
 
+    _wrapperGet(key) {
+        return new Promise((resolve, reject) => {
+            this.client.get(key, (err, value) => {
+                if (err) {
+                    console.log('Cache error:', err, 'for key:', key);
+                    resolve(null);
+                } else if (value) {
+                    resolve(value.toString());
+                } else {
+                    resolve(null);
+                }
+            });
+        });
+    }
+
+    _wrapperSet(key, value, lifetime) {
+        return new Promise((resolve, reject) => {
+            this.client.set(key, value, { expires: lifetime }, (err, value) => {
+                if (err) {
+                    console.log('Cache error:', err, 'for key:', key);
+                    resolve(null);
+                } else if (value) {
+                    resolve(value);
+                } else {
+                    resolve(null);
+                }
+            });
+        });
+    }
+
+    _wrapperDelete(key) {
+        return new Promise((resolve, reject) => {
+            this.client.delete(key, (err, value) => {
+                if (err) {
+                    console.log('Cache error:', err, 'for key:', key);
+                    resolve(null);
+                } else if (value) {
+                    resolve(value);
+                } else {
+                    resolve(null);
+                }
+            });
+        });
+    }
+
     _getNamespaceVersion (model) {
         if (this.namespaceVersion !== null && this.lastNamespaceModel === model) {
             return Promise.resolve(this.namespaceVersion);
@@ -39,13 +84,13 @@ class DoctrineMemcacheAdaptor {
 
 
         const namespaceCacheKey = this._getNamespaceCacheKey(model);
-        return this.client.get(namespaceCacheKey)
-            .then(data => {
+        return this._wrapperGet(namespaceCacheKey)
+            .then((data) => {
                 let version;
                 if (!data) {
                     version = 1;
                 } else {
-                    version = data || 1;
+                    version = Number(data) || 1;
                 }
                 this.lastNamespaceModel = model;
                 this.namespaceVersion = version;
@@ -60,7 +105,7 @@ class DoctrineMemcacheAdaptor {
 
         const options = this.cacheKeyLifetime || null;
 
-        return this.client.set(
+        return this._wrapperSet(
             namespaceCacheKey,
             version,
             options
@@ -80,7 +125,7 @@ class DoctrineMemcacheAdaptor {
 
         return this._withNamespace(key)
             .then((nkey) => {
-                return this.client.set(
+                return this._wrapperSet(
                     nkey,
                     JSON.stringify(value),
                     options
@@ -91,7 +136,7 @@ class DoctrineMemcacheAdaptor {
     get (key) {
         return this._withNamespace(key)
             .then((nkey) => {
-                return this.client.get(nkey)
+                return this._wrapperGet(nkey)
             })
             .then(data => {
                 if (!data) {
@@ -109,7 +154,7 @@ class DoctrineMemcacheAdaptor {
     del (key) {
         return this._withNamespace(key)
             .then((nkey) => {
-                return this.client.delete(nkey);
+                return this._wrapperDelete(nkey);
             });
     }
 
@@ -122,4 +167,4 @@ class DoctrineMemcacheAdaptor {
     }
 }
 
-module.exports = DoctrineMemcacheAdaptor
+module.exports = DoctrineMemJSAdaptor

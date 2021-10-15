@@ -1,5 +1,5 @@
 {
-  "name": "sequelize-transparent-cache-doctrine-memcache",
+  "name": "sequelize-transparent-cache-doctrine-memjs",
   "version": "2.3.0",
   "description": "memcache doctrine adaptor for sequelize-transparent-cache",
   "main": "src/index.js",
@@ -7,6 +7,7 @@
     "sequelize",
     "cache",
     "memcache",
+    "memjs",
     "plugin",
     "adaptor",
     "adapter"

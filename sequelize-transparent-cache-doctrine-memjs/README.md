@@ -1,18 +1,18 @@
 # sequelize-transparent-cache-memcache
 
-[memcache-plus](https://www.npmjs.com/package/memcache-plus) adaptor for [sequelize-transparent-cache](https://www.npmjs.com/package/sequelize-transparent-cache).
+[memjs](https://memjs.netlify.app/) adaptor for [sequelize-transparent-cache](https://www.npmjs.com/package/sequelize-transparent-cache).
 
-Stores sequelize objects in memcached using memcache-plus client in Doctrine Cache format.
+Stores sequelize objects in memcached using memjs client in Doctrine Cache format.
 
 ## Example usage
 
 ```javascript
-const MemcachePlus = require('memcache-plus')
+const MemJS = require('memjs')
 
 // Will initiate a connection to 'my-memcache-server.com' on port 12345
-const clientM = new MemcachePlus('my-memcache-server.com:12345')
+const clientM = new MemJS('my-memcache-server.com:12345')
 
-const MemcacheAdaptor = require('sequelize-transparent-cache/sequelize-transparent-cache-doctrine-memcache')
+const MemcacheAdaptor = require('sequelize-transparent-cache/sequelize-transparent-cache-doctrine-memjs')
 
 const memcacheAdaptor = new MemcacheAdaptor({
   client: clientM,
@@ -27,7 +27,7 @@ const memcacheAdaptor = new MemcacheAdaptor({
 
 | Param       | Type             | Required | Description                                                                     |
 |-------------|------------------|----------|---------------------------------------------------------------------------------|
-| `client`    | memcache-plus instance | yes      | Configured [memcache instance](https://memcache-plus.com/initialization.html) |
+| `client`    | memcache-plus instance | yes      | Configured [memcache instance](https://memjs.netlify.app/) |
 | `namespace` | string           | no       | Prefix for all keys                                                             |
 | `prefix`    | string           | no       | Prefix for the objectId (useful if you have multiple orms using the same cache) |
 | `lifetime`  | integer          | no       | Keys lifetime, seconds                                                          |
