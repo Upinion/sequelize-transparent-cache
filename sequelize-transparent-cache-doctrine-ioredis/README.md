@@ -9,14 +9,18 @@ Stores sequelize objects in redis using ioredis client in Doctrine Cache format.
 ```javascript
 const Redis = require('ioredis')
 const redis = new Redis()
+// OPTIONAL read only redis connection for reading
+const roRedis = new Redis()
 
 const RedisAdaptor = require('sequelize-transparent-cache/sequelize-transparent-cache-ioredis')
 const redisAdaptor = new RedisAdaptor({
   client: redis,
+  roClient: roRedis,
   namespace: 'model',  // optional
   prefix: 'sequelize', // optional
   lifetime: 60 * 60    // optional
 })
+
 
 ```
 
@@ -25,6 +29,7 @@ const redisAdaptor = new RedisAdaptor({
 | Param       | Type             | Required | Description                                                                     |
 |-------------|------------------|----------|---------------------------------------------------------------------------------|
 | `client`    | ioredis instance | yes      | Configured [ioredis instance](https://github.com/luin/ioredis#connect-to-redis) |
+| `roClient`  | ioredis instance | no       | Configured [ioredis instance](https://github.com/luin/ioredis#connect-to-redis) |
 | `namespace` | string           | no       | Prefix for all keys                                                             |
 | `prefix`    | string           | no       | Prefix for the objectId (useful if you have multiple orms using the same cache) |
 | `lifetime`  | integer          | no       | Keys lifetime, seconds                                                          |

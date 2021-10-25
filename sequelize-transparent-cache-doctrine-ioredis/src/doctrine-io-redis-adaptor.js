@@ -1,7 +1,12 @@
 const { serialize, unserialize } = require('php-serialize');
 class DoctrineIORedisAdaptor {
-    constructor ({ client, namespace, prefix, lifetime, cacheKeyLifetime }) {
+    constructor ({ client, roClient, namespace, prefix, lifetime, cacheKeyLifetime }) {
         this.client = client;
+        if (roClient) {
+            this.roClient = roClient;
+        } else {
+            this.roClient = client;
+        }
         this.namespace = namespace;
         this.prefix = prefix;
         this.lifetime = lifetime;
@@ -40,7 +45,7 @@ class DoctrineIORedisAdaptor {
 
 
         const namespaceCacheKey = this._getNamespaceCacheKey(model);
-        return this.client.get(namespaceCacheKey)
+        return this.roClient.get(namespaceCacheKey)
             .then(data => {
                 let version;
                 if (!data) {
@@ -96,7 +101,7 @@ class DoctrineIORedisAdaptor {
     get (key) {
         return this._withNamespace(key)
             .then((nkey) => {
-                return this.client.get(nkey)
+                return this.roClient.get(nkey)
             })
             .then(data => {
                 if (!data) {
