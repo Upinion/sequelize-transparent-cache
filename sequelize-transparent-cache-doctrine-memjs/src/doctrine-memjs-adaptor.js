@@ -107,7 +107,7 @@ class DoctrineMemJSAdaptor {
 
         return this._wrapperSet(
             namespaceCacheKey,
-            version,
+            `${version}`,
             options
         );
     }

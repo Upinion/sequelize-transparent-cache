@@ -40,7 +40,7 @@ function buildAutoMethods (client, model) {
     create () {
       return model.create.apply(model, arguments)
         .then(instance => {
-          return cache.save(client, instance)
+          return cache.save(client, instance, cache.getQueryInclude(model, arguments))
         })
     },
     findAll () {
@@ -48,11 +48,11 @@ function buildAutoMethods (client, model) {
       return cache.getAll(client, model, customKey)
         .then(instances => {
           if (instances) { // any array - cache hit
-            return instances
+              return instances
           }
 
           return model.findAll.apply(model, arguments)
-            .then(instances => cache.saveAll(client, model, instances, customKey))
+            .then(instances => cache.saveAll(client, model, instances, cache.getQueryInclude(model, arguments), customKey))
         })
     },
     findOrCreate () {
@@ -60,13 +60,13 @@ function buildAutoMethods (client, model) {
       return cache.get(client, model, customKey)
         .then(instance => {
           if (instance) {
-            return [instance, false]
+              return [instance, false]
           }
 
           return model.findOrCreate.apply(model, arguments)
                 .then(result => {
                     if (result[0]) {
-                        return cache.save(client, result[0], customKey)
+                        return cache.save(client, result[0], cache.getQueryInclude(model, arguments), customKey)
                             .then(() => result)
                     }
                     return result
@@ -78,12 +78,12 @@ function buildAutoMethods (client, model) {
       return cache.get(client, model, customKey)
         .then(instance => {
           if (instance) {
-            return instance
+              return instance
           }
 
           return model.findOne.apply(model, arguments)
                 .then(instance => {
-                    return cache.save(client, instance, customKey)
+                    return cache.save(client, instance, cache.getQueryInclude(model, arguments), customKey)
                 })
         })
     },
@@ -91,11 +91,11 @@ function buildAutoMethods (client, model) {
       return cache.get(client, model, id)
         .then(instance => {
           if (instance) {
-            return instance
+              return instance
           }
 
           return (model.findByPk || model.findById).apply(model, arguments)
-            .then(instance => cache.save(client, instance))
+            .then(instance => cache.save(client, instance, cache.getQueryInclude(model, arguments)))
         })
     },
     findById () {
@@ -129,7 +129,7 @@ function buildManualMethods (client, model, customKey) {
           }
 
           return model.findAll.apply(model, arguments)
-            .then(instances => cache.saveAll(client, model, instances, customKey))
+            .then(instances => cache.saveAll(client, model, instances, cache.getQueryInclude(model, arguments), customKey))
         })
     },
     findOrCreate () {
@@ -142,7 +142,7 @@ function buildManualMethods (client, model, customKey) {
           return model.findOrCreate.apply(model, arguments)
                 .then(result => {
                     if (result[0]) {
-                        return cache.save(client, result[0], customKey)
+                        return cache.save(client, result[0], cache.getQueryInclude(model, arguments), customKey)
                             .then(() => result)
 
                     }
@@ -158,7 +158,7 @@ function buildManualMethods (client, model, customKey) {
           }
 
           return model.findOne.apply(model, arguments)
-            .then(instance => cache.save(client, instance, customKey))
+            .then(instance => cache.save(client, instance, cache.getQueryInclude(model, arguments), customKey))
         })
     },
     purgeCache () {
