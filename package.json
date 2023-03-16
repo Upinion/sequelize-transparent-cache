@@ -1,11 +1,4 @@
 {
-  "author": {
-    "name": "Daniel Hreben",
-    "email": "daniel.hreben@gmail.com"
-  },
-  "bugs": {
-    "url": "https://github.com/Upinion/sequelize-transparent-cache/issues"
-  },
   "bundleDependencies": false,
   "deprecated": false,
   "description": "Simple to use and universal cache layer for Sequelize",
@@ -21,7 +14,7 @@
   ],
   "license": "CC-BY-4.0",
   "main": "src/index.js",
-  "name": "sequelize-transparent-cache",
+  "private": "true",
   "peerDependencies": {
     "sequelize": ">=5",
     "php-serialize": "^4.0.2"
