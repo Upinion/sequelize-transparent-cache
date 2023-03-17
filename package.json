@@ -17,6 +17,7 @@
   ],
   "license": "CC-BY-4.0",
   "main": "src/index.js",
+  "name": "sequelize-transparent-cache",
   "private": "true",
   "peerDependencies": {
     "sequelize": ">=5",
