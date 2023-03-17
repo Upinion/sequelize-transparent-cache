@@ -1,4 +1,4 @@
-const crypto = require('crypto');
+const murmurHash = require('murmurhash-native').murmurHash;
 const cache = require('../cache')
 
 const generateKey = (prepend, args) => {
@@ -29,7 +29,7 @@ const generateKey = (prepend, args) => {
             return value;
         }
     });
-    return crypto.createHash('md4').update(prepend+paramString).digest('hex');
+    return murmurHash(prepend+paramString, 0, 'hex');
 }; 
 
 function buildAutoMethods (client, model) {
