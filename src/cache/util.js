@@ -6,7 +6,7 @@ function instanceToData (instance, include) {
 }
 
 function fillInclude (model, include) {
-    if (!include || !Array.isArray(include)) return [];
+    if (!include || !(Array.isArray(include) || include.model)) return [];
     if (Array.isArray(include)) {
         return include.map((x) => {
             const ret = x;
