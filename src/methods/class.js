@@ -1,5 +1,5 @@
 const murmurHash = require('murmurhash-native').murmurHash;
-const cache = require('../cache')
+const cache = require('../cache');
 
 const generateKey = (prepend, args) => {
     const paramString = JSON.stringify(args, (key, value) => {
@@ -100,6 +100,22 @@ function buildAutoMethods (client, model) {
     },
     findById () {
       return this.findByPk.apply(this, arguments)
+    },
+    rawQuery () {
+      const customKey = generateKey(`rawQuery:${model.name}`, arguments);
+      return cache.getRaw(client, model.tableName, customKey)
+        .then(data => {
+          if (data) {
+              return data
+          }
+
+          const query = arguments[0];
+          const options = arguments[1] || {};
+          return model.sequelize.query(query, options)
+                .then((newData) => {
+                    return cache.saveRaw(client, model.tableName, newData, customKey)
+                })
+        })
     },
     upsert (data) {
       return model.upsert.apply(model, arguments).then(created => {

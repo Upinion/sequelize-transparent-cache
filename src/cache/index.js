@@ -65,6 +65,19 @@ async function save (client, instance, include, customKey) {
     return client.set(key, instanceToData(instance, include)).then(() => instance);
 }
 
+async function saveRaw (client, tableName, data, customKey) {
+    if (!data) {
+        return Promise.resolve(data);
+    }
+
+    const key = [
+        tableName,
+        customKey
+    ];
+
+    return client.set(key, data).then(() => data);
+}
+
 function saveAll (client, model, instances, include, customKey) {
     const key = [
         model.tableName,
@@ -99,6 +112,17 @@ function get (client, model, id) {
     });
 }
 
+function getRaw (client, tableName, customKey) {
+    const key = [
+        tableName,
+        customKey
+    ];
+
+    return client.get(key).then(data => {
+        return data;
+    });
+}
+
 function destroy (client, instance) {
     if (!instance) {
         return Promise.resolve(instance);
@@ -124,8 +148,10 @@ function clearKey (client, instance, model) {
 module.exports = {
     getQueryInclude,
     save,
+    saveRaw,
     saveAll,
     get,
+    getRaw,
     getAll,
     destroy,
     clearKey

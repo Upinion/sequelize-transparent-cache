@@ -27,5 +27,5 @@
     "type": "git",
     "url": "git+https://github.com/Upinion/sequelize-transparent-cache.git"
   },
-  "version": "2.4.0"
+  "version": "2.5.0"
 }
